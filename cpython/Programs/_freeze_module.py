@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Python implementation of Programs/_freeze_module.c
 
 The pure Python implementation uses same functions and arguments as the C

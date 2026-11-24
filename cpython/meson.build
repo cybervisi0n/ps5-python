@@ -4,9 +4,10 @@ cpython_srcs = files(
     'Modules/config.c',
     'Modules/main.c',
     'Modules/gcmodule.c',
+    'Modules/getpath.c',
     'Modules/atexitmodule.c',
     'Modules/faulthandler.c',
-    #'Modules/posixmodule.c',
+    'Modules/posixmodule.c',
     'Modules/signalmodule.c',
     'Modules/_tracemalloc.c',
     'Modules/_suggestions.c',
@@ -90,6 +91,7 @@ cpython_srcs = files(
     'Parser/string_parser.c',
     'Parser/token.c',
     'Parser/peg_api.c',
+    'Parser/myreadline.c',
     'Parser/lexer/buffer.c',
     'Parser/lexer/lexer.c',
     'Parser/lexer/state.c',
@@ -120,6 +122,7 @@ cpython_srcs = files(
     'Python/errors.c',
     'Python/flowgraph.c',
     'Python/frame.c',
+    'Python/frozen.c',
     'Python/frozenmain.c',
     'Python/future.c',
     'Python/gc.c',
@@ -194,6 +197,7 @@ cpython_lib = static_library('cpython',
     sources: cpython_srcs,
     include_directories: cpython_includes,
     c_args: [
-        '-DPy_BUILD_CORE'
+        '-DPy_BUILD_CORE',
+        '-w'
     ]
 )

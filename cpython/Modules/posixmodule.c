@@ -8953,6 +8953,7 @@ os_openpty_impl(PyObject *module)
     sig_saved = PyOS_setsig(SIGCHLD, SIG_DFL);
 
     /* change permission of slave */
+    #ifndef __PROSPERO__
     if (grantpt(master_fd) < 0) {
         int saved_errno = errno;
         PyOS_setsig(SIGCHLD, sig_saved);
@@ -8967,10 +8968,14 @@ os_openpty_impl(PyObject *module)
         errno = saved_errno;
         goto posix_error;
     }
+    #endif
 
     PyOS_setsig(SIGCHLD, sig_saved);
 
+    //PROSPERO TODO
+    #ifndef __PROSPERO__
     slave_name = ptsname(master_fd); /* get name of slave */
+    #endif
     if (slave_name == NULL)
         goto posix_error;
 
@@ -8993,11 +8998,14 @@ os_openpty_impl(PyObject *module)
         close(tty_fd);
     }
 #endif
+#ifndef __PROSPERO__
+    // PROSPERO TODO
     ioctl(slave_fd, I_PUSH, "ptem"); /* push ptem */
     ioctl(slave_fd, I_PUSH, "ldterm"); /* push ldterm */
 #ifndef __hpux
     ioctl(slave_fd, I_PUSH, "ttcompat"); /* push ttcompat */
 #endif /* __hpux */
+#endif
 #ifdef TIOCNOTTY
     if (!had_ctty && getsid(0) == getpid()) {
         // Disown it; TIOCNOTTY sends SIGHUP to the session leader.
@@ -9106,7 +9114,10 @@ os_forkpty_impl(PyObject *module)
         return NULL;
     }
     PyOS_BeforeFork();
+    //PROSPERO TODO
+    #ifndef __PROSPERO__
     pid = forkpty(&master_fd, NULL, NULL, NULL);
+    #endif
     if (pid == 0) {
         /* child: this clobbers and resets the import lock. */
         PyOS_AfterFork_Child();
@@ -9419,8 +9430,10 @@ os_initgroups_impl(PyObject *module, PyObject *oname, gid_t gid)
 {
     const char *username = PyBytes_AS_STRING(oname);
 
+    #ifndef __PROSPERO__
     if (initgroups(username, gid) == -1)
         return PyErr_SetFromErrno(PyExc_OSError);
+    #endif
 
     Py_RETURN_NONE;
 }
@@ -9479,12 +9492,14 @@ static PyObject *
 os_setpgrp_impl(PyObject *module)
 /*[clinic end generated code: output=2554735b0a60f0a0 input=1f0619fcb5731e7e]*/
 {
-#ifdef SETPGRP_HAVE_ARG
+#ifndef __PROSPERO__
+#if defined(SETPGRP_HAVE_ARG)
     if (setpgrp(0, 0) < 0)
 #else /* SETPGRP_HAVE_ARG */
     if (setpgrp() < 0)
 #endif /* SETPGRP_HAVE_ARG */
         return posix_error();
+#endif
     Py_RETURN_NONE;
 }
 #endif /* HAVE_SETPGRP */
@@ -10186,11 +10201,13 @@ os_waitid_impl(PyObject *module, idtype_t idtype, id_t id, int options)
     siginfo_t si;
     si.si_pid = 0;
 
+    #ifndef __PROSPERO__
     do {
         Py_BEGIN_ALLOW_THREADS
         res = waitid(idtype, id, &si, options);
         Py_END_ALLOW_THREADS
     } while (res < 0 && errno == EINTR && !(async_err = PyErr_CheckSignals()));
+    #endif
     if (res < 0)
         return (!async_err) ? posix_error() : NULL;
 
@@ -10379,9 +10396,12 @@ os_setns_impl(PyObject *module, int fd, int nstype)
 {
     int res;
 
+    //PROSPERO TODO
+    #ifndef __PROSPERO__
     Py_BEGIN_ALLOW_THREADS
     res = setns(fd, nstype);
     Py_END_ALLOW_THREADS
+    #endif
 
     if (res != 0) {
         return posix_error();
@@ -10407,9 +10427,12 @@ os_unshare_impl(PyObject *module, int flags)
 {
     int res;
 
+    // PROSPERO TODO
+    #ifndef __PROSPERO__
     Py_BEGIN_ALLOW_THREADS
     res = unshare(flags);
     Py_END_ALLOW_THREADS
+    #endif
 
     if (res != 0) {
         return posix_error();
@@ -10930,6 +10953,10 @@ os_timerfd_create_impl(PyObject *module, int clockid, int flags)
 /*[clinic end generated code: output=1caae80fb168004a input=64b7020c5ac0b8f4]*/
 
 {
+    #ifdef __PROSPERO__
+    // PROSPERO TODO
+    return NULL;
+    #else
     int fd;
     Py_BEGIN_ALLOW_THREADS
     flags |= TFD_CLOEXEC;  // PEP 446: always create non-inheritable FD
@@ -10939,6 +10966,7 @@ os_timerfd_create_impl(PyObject *module, int clockid, int flags)
         return PyErr_SetFromErrno(PyExc_OSError);
     }
     return PyLong_FromLong(fd);
+    #endif
 }
 
 /*[clinic input]
@@ -10983,6 +11011,10 @@ os_timerfd_settime_impl(PyObject *module, int fd, int flags,
         return NULL;
     }
 
+    //PROSPERO TODO
+    #ifdef __PROSPERO__
+    return NULL;
+    #else
     int result;
     Py_BEGIN_ALLOW_THREADS
     result = timerfd_settime(fd, flags, &new_value, &old_value);
@@ -10991,6 +11023,7 @@ os_timerfd_settime_impl(PyObject *module, int fd, int flags,
         return PyErr_SetFromErrno(PyExc_OSError);
     }
     return build_itimerspec(&old_value);
+    #endif
 }
 
 
@@ -11027,9 +11060,14 @@ os_timerfd_settime_ns_impl(PyObject *module, int fd, int flags,
         PyErr_SetString(PyExc_ValueError, "invalid interval value");
         return NULL;
     }
+    #ifdef __PROSPERO__
+    //PROSPERO TODO
+    result = -1;
+    #else
     Py_BEGIN_ALLOW_THREADS
     result = timerfd_settime(fd, flags, &new_value, &old_value);
     Py_END_ALLOW_THREADS
+    #endif
     if (result == -1) {
         return PyErr_SetFromErrno(PyExc_OSError);
     }
@@ -11050,6 +11088,10 @@ static PyObject *
 os_timerfd_gettime_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=ec5a94a66cfe6ab4 input=6511475a40bc5ee6]*/
 {
+    //PROSPERO TODO
+    #ifdef __PROSPERO__
+    return NULL;
+    #else
     struct itimerspec curr_value;
     int result;
     Py_BEGIN_ALLOW_THREADS
@@ -11059,6 +11101,7 @@ os_timerfd_gettime_impl(PyObject *module, int fd)
         return PyErr_SetFromErrno(PyExc_OSError);
     }
     return build_itimerspec(&curr_value);
+    #endif
 }
 
 
@@ -11076,6 +11119,10 @@ static PyObject *
 os_timerfd_gettime_ns_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=580633a4465f39fe input=8322cb9855b40a9e]*/
 {
+    #ifdef __PROSPERO__
+    //PROSPERO TODO
+    return NULL;
+    #else
     struct itimerspec curr_value;
     int result;
     Py_BEGIN_ALLOW_THREADS
@@ -11085,6 +11132,7 @@ os_timerfd_gettime_ns_impl(PyObject *module, int fd)
         return PyErr_SetFromErrno(PyExc_OSError);
     }
     return build_itimerspec_ns(&curr_value);
+    #endif
 }
 
 #undef ONE_SECOND_IN_NS
@@ -12605,11 +12653,14 @@ os_copy_file_range_impl(PyObject *module, int src, int dst, Py_ssize_t count,
         p_offset_dst = &offset_dst_val;
     }
 
+    #ifndef __PROSPERO__
+    //PROSPERO TODO
     do {
         Py_BEGIN_ALLOW_THREADS
         ret = copy_file_range(src, p_offset_src, dst, p_offset_dst, count, flags);
         Py_END_ALLOW_THREADS
     } while (ret < 0 && errno == EINTR && !(async_err = PyErr_CheckSignals()));
+    #endif
 
     if (ret < 0) {
         return (!async_err) ? posix_error() : NULL;
@@ -16884,6 +16935,8 @@ os_getrandom_impl(PyObject *module, Py_ssize_t size, int flags)
         return NULL;
     }
 
+    #ifndef __PROSPERO__
+    // PROSPERO TODO
     while (1) {
         n = syscall(SYS_getrandom,
                     PyBytes_AS_STRING(bytes),
@@ -16899,6 +16952,7 @@ os_getrandom_impl(PyObject *module, Py_ssize_t size, int flags)
         }
         break;
     }
+    #endif
 
     if (n < 0) {
         PyErr_SetFromErrno(PyExc_OSError);

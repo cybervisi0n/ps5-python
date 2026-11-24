@@ -170,7 +170,7 @@
 #define HAVE_COMPUTED_GOTOS 1
 
 /* Define to 1 if you have the 'confstr' function. */
-#define HAVE_CONFSTR 1
+//#define HAVE_CONFSTR 1
 
 /* Define to 1 if you have the <conio.h> header file. */
 /* #undef HAVE_CONIO_H */
@@ -182,7 +182,7 @@
 #define HAVE_COPY_FILE_RANGE 1
 
 /* Define to 1 if you have the 'ctermid' function. */
-#define HAVE_CTERMID 1
+//#define HAVE_CTERMID 1
 
 /* Define if you have the 'ctermid_r' function. */
 /* #undef HAVE_CTERMID_R */
@@ -243,7 +243,7 @@
 
 /* Define to 1 if you have the declaration of 'RTLD_DEEPBIND', and to 0 if you
    don't. */
-#define HAVE_DECL_RTLD_DEEPBIND 1
+//#define HAVE_DECL_RTLD_DEEPBIND 1
 
 /* Define to 1 if you have the declaration of 'RTLD_GLOBAL', and to 0 if you
    don't. */
@@ -331,7 +331,7 @@
 /* #undef HAVE_DYLD_SHARED_CACHE_CONTAINS_PATH */
 
 /* Defined when any dynamic module loading is enabled. */
-#define HAVE_DYNAMIC_LOADING 1
+//#define HAVE_DYNAMIC_LOADING 0
 
 /* Define to 1 if you have the <editline/readline.h> header file. */
 /* #undef HAVE_EDITLINE_READLINE_H */
@@ -521,7 +521,7 @@
 #define HAVE_GETGRNAM_R 1
 
 /* Define to 1 if you have the 'getgrouplist' function. */
-#define HAVE_GETGROUPLIST 1
+//#define HAVE_GETGROUPLIST 1
 
 /* Define to 1 if you have the 'getgroups' function. */
 #define HAVE_GETGROUPS 1
@@ -602,7 +602,7 @@
 #define HAVE_GETRANDOM 1
 
 /* Define to 1 if the Linux getrandom() syscall is available */
-#define HAVE_GETRANDOM_SYSCALL 1
+//#define HAVE_GETRANDOM_SYSCALL 1
 
 /* Define to 1 if you have the 'getresgid' function. */
 #define HAVE_GETRESGID 1
@@ -642,7 +642,7 @@
 /* #undef HAVE_GLIBC_MEMMOVE_BUG */
 
 /* Define to 1 if you have the 'grantpt' function. */
-#define HAVE_GRANTPT 1
+//#define HAVE_GRANTPT 1
 
 /* Define to 1 if you have the <grp.h> header file. */
 #define HAVE_GRP_H 1
@@ -799,7 +799,7 @@
 #define HAVE_LISTEN 1
 
 /* Define to 1 if you have the 'lockf' function. */
-#define HAVE_LOCKF 1
+//#define HAVE_LOCKF 1
 
 /* Define to 1 if you have the 'log1p' function. */
 #define HAVE_LOG1P 1
@@ -808,7 +808,7 @@
 #define HAVE_LOG2 1
 
 /* Define to 1 if you have the `login_tty' function. */
-#define HAVE_LOGIN_TTY 1
+//#define HAVE_LOGIN_TTY 1
 
 /* Define to 1 if the system has the type 'long double'. */
 #define HAVE_LONG_DOUBLE 1
@@ -925,7 +925,7 @@
 #define HAVE_NET_IF_H 1
 
 /* Define to 1 if you have the 'nice' function. */
-#define HAVE_NICE 1
+//#define HAVE_NICE 1
 
 /* Define if the internal form of wchar_t in non-Unicode locales is not
    Unicode. */
@@ -938,7 +938,7 @@
 #define HAVE_OPENDIR 1
 
 /* Define to 1 if you have the 'openpty' function. */
-#define HAVE_OPENPTY 1
+//#define HAVE_OPENPTY 1
 
 /* Define if you have the 'panel' library */
 /* #undef HAVE_PANEL */
@@ -987,16 +987,16 @@
 
 /* Define to 1 if you have the 'posix_spawn_file_actions_addclosefrom_np'
    function. */
-#define HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP 1
+//#define HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP 1
 
 /* Define to 1 if you have the 'pread' function. */
 #define HAVE_PREAD 1
 
 /* Define to 1 if you have the 'preadv' function. */
-#define HAVE_PREADV 1
+//#define HAVE_PREADV 1
 
 /* Define to 1 if you have the 'preadv2' function. */
-#define HAVE_PREADV2 1
+//#define HAVE_PREADV2 1
 
 /* Define if you have the 'prlimit' function. */
 #define HAVE_PRLIMIT 1
@@ -1054,10 +1054,10 @@
 /* #undef HAVE_PTHREAD_STUBS */
 
 /* Define to 1 if you have the 'ptsname' function. */
-#define HAVE_PTSNAME 1
+//#define HAVE_PTSNAME 1
 
 /* Define to 1 if you have the 'ptsname_r' function. */
-#define HAVE_PTSNAME_R 1
+//#define HAVE_PTSNAME_R 1
 
 /* Define to 1 if you have the <pty.h> header file. */
 //#define HAVE_PTY_H 1
@@ -1561,7 +1561,7 @@
 #define HAVE_TRUNCATE 1
 
 /* Define to 1 if you have the 'ttyname_r' function. */
-#define HAVE_TTYNAME_R 1
+//#define HAVE_TTYNAME_R 1
 
 /* Define to 1 if you don't have 'tm_zone' but do have the external array
    'tzname'. */
@@ -1580,7 +1580,7 @@
 #define HAVE_UNLINKAT 1
 
 /* Define to 1 if you have the 'unlockpt' function. */
-#define HAVE_UNLOCKPT 1
+//#define HAVE_UNLOCKPT 1
 
 /* Define to 1 if you have the 'unshare' function. */
 #define HAVE_UNSHARE 1
@@ -1606,7 +1606,7 @@
 //#define HAVE_UTMP_H 1
 
 /* Define if you have the 'HAVE_UT_NAMESIZE' constant. */
-#define HAVE_UT_NAMESIZE 1
+//#define HAVE_UT_NAMESIZE 1
 
 /* Define to 1 if you have the 'uuid_create' function. */
 /* #undef HAVE_UUID_CREATE */

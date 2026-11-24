@@ -301,6 +301,7 @@ pwd_getpwall_impl(PyObject *module)
     struct passwd *p;
     if ((d = PyList_New(0)) == NULL)
         return NULL;
+    #ifndef __PROSPERO__
     setpwent();
     while ((p = getpwent()) != NULL) {
         PyObject *v = mkpwent(module, p);
@@ -313,6 +314,7 @@ pwd_getpwall_impl(PyObject *module)
         Py_DECREF(v);
     }
     endpwent();
+    #endif
     return d;
 }
 #endif

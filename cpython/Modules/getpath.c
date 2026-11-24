@@ -27,6 +27,14 @@
 /* Reference the precompiled getpath.py */
 #include "Python/frozen_modules/getpath.h"
 
+#ifdef __PROSPERO__
+#define PREFIX "idk"
+#define VERSION 3
+#define EXEC_PREFIX "idk"
+#define VPATH "/app0"
+#define PLATLIBDIR "/app0/sce_module"
+#endif
+
 #if (!defined(PREFIX) || !defined(EXEC_PREFIX) \
         || !defined(VERSION) || !defined(VPATH) \
         || !defined(PLATLIBDIR))
