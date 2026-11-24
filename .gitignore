@@ -1,2 +1,5 @@
 build/
 .cache/
+deps/
+subprojects/prospero-headers/
+subprojects/ps5-app-crt/

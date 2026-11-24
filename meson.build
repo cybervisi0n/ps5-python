@@ -9,7 +9,7 @@ project('ps5-app', ['c', 'cpp'],
 cpp = meson.get_compiler('cpp')
 
 # Define your app's serial below:
-app_serial = 'PPSA99999'
+app_serial = 'PPSA90001'
 
 # External static libraries
 ps5_lib_dirs = [
